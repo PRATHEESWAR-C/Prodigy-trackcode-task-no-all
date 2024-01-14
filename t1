@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: #fc4545;
+            color: #a1cbee;
+            padding: 15px;
+            z-index: 1000;
+            transition: background-color 0.3s ease;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            padding: 10px;
+            transition: color 0.3s ease;
+        }
+
+        section {
+            height: 800px; /* Adjust this height based on your content */
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="#" class="nav-link">Home</a>
+            <a href="#" class="nav-link">About</a>
+            <a href="#" class="nav-link">Services</a>
+            <a href="#" class="nav-link">Contact</a>
+        </nav>
+    </header>
+
+    <section>
+        <h1>Content Section</h1>
+        <!-- Your page content goes here -->
+    </section>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const header = document.querySelector("header");
+
+            // Change background color on scroll
+            window.addEventListener("scroll", function () {
+                if (window.scrollY > 50) {
+                    header.style.backgroundColor = "#555";
+                } else {
+                    header.style.backgroundColor = "#333";
+                }
+            });
+
+            // Change font color on hover
+            const navLinks = document.querySelectorAll(".nav-link");
+            navLinks.forEach(link => {
+                link.addEventListener("mouseover", function () {
+                    this.style.color = "#ffcc00";
+                });
+
+                link.addEventListener("mouseout", function () {
+                    this.style.color = "#fff";
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+
