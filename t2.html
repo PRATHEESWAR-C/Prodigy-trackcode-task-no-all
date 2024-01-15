@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: red;
+        }
+
+        #stopwatch {
+            text-align: center;
+        }
+
+        #buttons {
+            margin-top: 20px;
+            color: aqua;
+        }
+
+        button {
+            font-size: 16px;
+            padding: 10px 20px;
+            margin: 0 5px;
+            cursor: pointer;
+            color: blue;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="stopwatch">
+        <h1 id="display">00:00:00</h1>
+        <div id="buttons">
+            <button onclick="startStop()">Start</button>
+            <button onclick="lap()">Lap</button>
+            <button onclick="reset()">Reset</button>
+        </div>
+        <ul id="laps"></ul>
+    </div>
+
+    <script>
+        let isRunning = false;
+        let startTime;
+        let lapStartTime;
+        let laps = [];
+
+        function startStop() {
+            if (isRunning) {
+                stop();
+            } else {
+                start();
+            }
+        }
+
+        function start() {
+            isRunning = true;
+            startTime = lapStartTime = new Date().getTime() - (laps.length > 0 ? laps.reduce((acc, lap) => acc + lap, 0) : 0);
+            update();
+        }
+
+        function stop() {
+            isRunning = false;
+            laps.push(new Date().getTime() - lapStartTime);
+            update();
+        }
+
+        function reset() {
+            isRunning = false;
+            startTime = lapStartTime = null;
+            laps = [];
+            update();
+        }
+
+        function lap() {
+            if (isRunning) {
+                laps.push(new Date().getTime() - lapStartTime);
+                lapStartTime = new Date().getTime();
+                updateLaps();
+            }
+        }
+
+        function update() {
+            const currentTime = isRunning ? new Date().getTime() - startTime : (laps.length > 0 ? laps.reduce((acc, lap) => acc + lap, 0) : 0);
+            const formattedTime = formatTime(currentTime);
+            document.getElementById('display').innerText = formattedTime;
+            updateLaps();
+        }
+
+        function updateLaps() {
+            const lapsList = document.getElementById('laps');
+            lapsList.innerHTML = '';
+            laps.forEach((lap, index) => {
+                const lapTime = formatTime(lap);
+                const lapItem = document.createElement('li');
+                lapItem.innerText = `Lap ${index + 1}: ${lapTime}`;
+                lapsList.appendChild(lapItem);
+            });
+        }
+
+        function formatTime(milliseconds) {
+            const totalSeconds = Math.floor(milliseconds / 1000);
+            const minutes = Math.floor(totalSeconds / 60);
+            const seconds = totalSeconds % 60;
+            const millis = milliseconds % 1000;
+            return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}.${String(millis).padStart(3, '0')}`;
+        }
+
+        setInterval(update, 10); // Update every 10 milliseconds for a smoother display
+    </script>
+</body>
+
+</html>
